@@ -86,7 +86,7 @@ module.exports = function (app, passport) {
 				} else {
 					datetime = new Date(datetime);
 					res.json({
-						unix: datetime.getTime()/1000,
+						unix: +(datetime.getTime()/1000),
 						natural: req.params.datetime
 					});
 				}
@@ -97,7 +97,7 @@ module.exports = function (app, passport) {
 				];
 				
 				res.json({
-					unix: req.params.datetime,
+					unix: +req.params.datetime,
 					natural: monthNames[unixtime.getMonth()] + ' ' + unixtime.getDate() + ', ' + unixtime.getFullYear()
 				});
 			
