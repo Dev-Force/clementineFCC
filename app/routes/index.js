@@ -57,8 +57,25 @@ module.exports = function (app, passport) {
 		.delete(isLoggedIn, clickHandler.resetClicks);
 		
 	// Custom
+	app.route('/whoami')
+		.get(function(req, res) {
+			res.contentType('application/json');
+			var useragent = req.headers['user-agent'];
+			var words = [];
+			useragent.replace(/\((.+?)\)/g, function($0, $1) { words.push($1) })
+	
+			res.send({
+				ipaddress: req.headers['x-forwarded-for'],
+				language: req.headers["accept-language"].split(',')[0],
+				software: words[0]
+			});
+			
+			res.end();
+		});
+	
 	app.route('/:datetime')
 		.get(function(req, res) {
+			res.contentType('application/json');
 			if(isNaN(+req.params.datetime)){
 				var datetime = Date.parse(req.params.datetime);
 				if(!datetime) {
