@@ -3,6 +3,7 @@
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 
+
 module.exports = function (app, passport) {
 
 	function isLoggedIn (req, res, next) {
@@ -54,4 +55,38 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn, clickHandler.getClicks)
 		.post(isLoggedIn, clickHandler.addClick)
 		.delete(isLoggedIn, clickHandler.resetClicks);
+		
+	// Custom
+	app.route('/:datetime')
+		.get(function(req, res) {
+			if(isNaN(+req.params.datetime)){
+				var datetime = Date.parse(req.params.datetime);
+				if(!datetime) {
+					res.json({
+						unix: null,
+						natural: null
+					});
+				} else {
+					datetime = new Date(datetime);
+					res.json({
+						unix: datetime.getTime()/1000,
+						natural: req.params.datetime
+					});
+				}
+			} else {
+				var unixtime = new Date(+req.params.datetime*1000);
+				var monthNames = ["January", "February", "March", "April", "May", "June",
+				  "July", "August", "September", "October", "November", "December"
+				];
+				
+				res.json({
+					unix: req.params.datetime,
+					natural: monthNames[unixtime.getMonth()] + ' ' + unixtime.getDate() + ', ' + unixtime.getFullYear()
+				});
+			
+			}
+			
+			res.end();
+			
+		});
 };
