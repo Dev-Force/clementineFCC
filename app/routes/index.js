@@ -2,6 +2,8 @@
 
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+var validurl = require('valid-url');
+var URL = require('../models/url');
 
 
 module.exports = function (app, passport) {
@@ -70,7 +72,62 @@ module.exports = function (app, passport) {
 				software: words[0]
 			});
 			
-			res.end();
+		});
+	
+	app.route('/new/*')
+		.get(function(req, res) {
+			res.contentType('application/json');
+			if(validurl.isWebUri(req.params[0])) { // if its a valid url
+				URL.findOne({uri: req.params[0]}, function(err, data) {
+					if(err) throw err;
+					console.log(data);
+					if(data != null) {
+						res.json({original_url: req.params[0], short_url: req.protocol + '://' + req.get('host') + '/' + data.id });
+					} else {
+						URL.findOne().sort({x:1}).exec(function(err, sorted) {
+							if(err) throw err;
+							console.log(sorted);
+							var newURL = new URL();
+							newURL.id = (sorted == null) ? 0 : (+sorted.id + 1);
+							newURL.uri = req.params[0];
+							newURL.short_url = req.protocol + '://' + req.get('host') + '/' + newURL.id
+		
+							newURL.save(function (err) {
+								if (err) throw err;
+								// console log message
+								res.json({
+									original_url: newURL.uri,
+									short_url: newURL.short_url
+								});
+								
+							});	
+						});						
+					}
+				});
+			} else {
+				res.send('this is not a valid URI');
+			}
+		});
+		
+	app.route('/url/*')
+		.get(function(req, res) {
+			// URL.find(function(err, data) {
+			// 	res.send(data);
+			// });
+			if(!isNaN(req.params[0])) { // If its a number
+				URL.findOne({id: req.params[0]}, function(err, data) {
+					if(err) throw err;
+					if(data != null) {
+						console.log(data.uri);
+						res.redirect(data.uri);
+						// res.json({original_url: req.params[0], short_url: req.protocol + '://' + req.get('host') + '/' + data.id });
+					} else {
+						res.send('No such shortlink');
+					}
+				});
+			} else {
+				res.send('Invalid shortlink');
+			}
 		});
 	
 	app.route('/:datetime')
