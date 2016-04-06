@@ -9,6 +9,13 @@ var Bing = require('node-bing-api')({ accKey: "VRAFeiNTP31dbq0goGu60OTxAC0rBMECj
 var multer = require('multer');
 var upload = multer();
 
+var cors = function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+      next();
+    };
 
 module.exports = function (app, passport) {
 
@@ -181,17 +188,9 @@ module.exports = function (app, passport) {
 		.get(function(req, res) {
 			res.sendFile(path + '/public/fileupload.html');
 		});
-		
-	app.use(function(req, res, next) {
-	    res.header("Access-Control-Allow-Origin", "*");
-	    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-		res.header('Access-Control-Allow-Headers', 'Content-Type');
-	  next();
-	});	
 	
 	app.route('/fileanalyse')
-		.post(upload.single('the-file'), function(req, res, next) {
+		.post(upload.single('the-file'), cors, function(req, res, next) {
 			console.log(req.file);
 			res.json({fileSize: req.file.size});
 		});
