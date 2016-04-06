@@ -32,6 +32,8 @@
     				$.each(files, function(key, value) {
     					data.append(key, value);
     				});
+    				
+    				console.log(data, files);
     
     				$.ajax({
     					url: window.location.origin + '/fileanalyse',
@@ -47,6 +49,7 @@
     					},
     					success: function(data) {
     						alert('FILE SIZE: ' + data.fileSize);
+    						console.log(data);
     					}
     				});
     			});

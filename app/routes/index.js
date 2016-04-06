@@ -9,6 +9,7 @@ var Bing = require('node-bing-api')({ accKey: "VRAFeiNTP31dbq0goGu60OTxAC0rBMECj
 var multer = require('multer');
 var upload = multer();
 
+
 module.exports = function (app, passport) {
 
 	function isLoggedIn (req, res, next) {
@@ -181,8 +182,17 @@ module.exports = function (app, passport) {
 			res.sendFile(path + '/public/fileupload.html');
 		});
 		
+	app.use(function(req, res, next) {
+	    res.header("Access-Control-Allow-Origin", "*");
+	    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+	  next();
+	});	
+	
 	app.route('/fileanalyse')
-		.post(upload.single('the-file'), function(req, res) {
+		.post(upload.single('the-file'), function(req, res, next) {
+			console.log(req.file);
 			res.json({fileSize: req.file.size});
 		});
 		
