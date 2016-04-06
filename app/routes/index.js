@@ -4,7 +4,8 @@ var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 var validurl = require('valid-url');
 var URL = require('../models/url');
-
+var Images = require('../models/images');
+var Bing = require('node-bing-api')({ accKey: "VRAFeiNTP31dbq0goGu60OTxAC0rBMECjtzlRTFHd7c=" });
 
 module.exports = function (app, passport) {
 
@@ -130,6 +131,48 @@ module.exports = function (app, passport) {
 			}
 		});
 	
+	app.route('/imagesearch/:string')
+		.get(function(req, res) {
+			var offset = 0;
+			if(req.query.offset != null) {
+				offset = +req.query.offset;
+			}
+			
+			var image = new Images();
+			image.term = req.params.string;
+			image.save();
+			
+			if(isNaN(offset) || offset<0) {
+				res.send('Wrong offset. Must be a positive integer');
+				return;
+			}
+			
+			Bing.images(req.params.string, {top: 10, skip: 10*offset}, function(err, response, body) {
+				if(err) throw err;
+				var images = [];
+				
+				body.d.results.forEach(function(image) {
+					images.push({
+						Url: image.MediaUrl,
+						AltText: image.Title,
+						PageUrl: image.SourceUrl
+					});
+				});
+			  	res.json(images);
+			});
+		});
+	
+	app.route('/latest/imagesearch')
+		.get(function(req, res) {
+			Images.find({}, {
+					_id: 0,
+					term: 1,
+					createdAt: 1
+				},function(err, data) {
+					if(err) throw err;
+					res.send(data);
+				});
+		});	
 	app.route('/:datetime')
 		.get(function(req, res) {
 			res.contentType('application/json');
