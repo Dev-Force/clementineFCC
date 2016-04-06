@@ -1,0 +1,6 @@
+<script src="http://83.212.109.158/data/Movies/flowplayer-5.4.3/embed.min.js">
+<div class="flowplayer" style="width: 624px; height: 260px;">
+      <video>
+         <source type="video/flv" src="http://83.212.109.158/data/Movies/GAMEOFTHRONES/GOTS1/GAMEOFTHRONESS01E01.flv">
+      </video>
+</div></script>

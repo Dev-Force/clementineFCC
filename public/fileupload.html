@@ -29,11 +29,7 @@
     				event.preventDefault();
     
     				var data = new FormData();
-    				$.each(files, function(key, value) {
-    					data.append(key, value);
-    				});
-    				
-    				console.log(data, files);
+					data.append('the-file', files[0]);
     
     				$.ajax({
     					url: window.location.origin + '/fileanalyse',
@@ -45,6 +41,7 @@
                         contentType: false,
     					error: function(jqXHR, textStatus, errorThrown) {
     						alert('ERRORS: ' + textStatus);
+    						alert(jqXHR.responseText);
     						console.log(errorThrown);
     					},
     					success: function(data) {

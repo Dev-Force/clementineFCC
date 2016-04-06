@@ -1,0 +1,162 @@
+mongolab.com user/pass::
+mman
+mongo.123.lab
+
+mongodb://test:test@ds035663.mongolab.com:35663/fcctests
+/// server/config/environment/production.js
+
+heroku config:set NODE_ENV=production
+ // production **MUST** be on lowercase
+heroku config:set IP=0.0.0.0
+
+heroku config:set MONGOLAB_URI=mongodb://user:pass@mongolabaddress.mongolab.com:12345/databaseName
+
+heroku config:set TWITTER_ID=        Consumer Key (API Key)
+heroku config:set TWITTER_SECRET=    CONSUMER SECRET  
+heroku config:set DOMAIN=<your-heroku-app-name>.herokuapp.com (without last trailing slash)
+
+callback address should be <your-heroku-app-name>/auth/twitter/callback
+
+//////TWITtER
+https://dev.twitter.com/web/sign-in/implementing
+
+callback  /auth/twitter/callback
+
+/////////////////
+
+  yelp: {
+heroku config:set CONSUMER_KEY=uSsjpYxiaN84D0AHpY33Aw
+heroku config:set CONSUMER_SECRET=W5ma8YuGo51URByACjUMGNLx5sc
+heroku config:set TOKEN=Zhv9isPm2McJBO6oIVlv2Nu_26Lcq_rH
+heroku config:set TOKEN_SECRET=SMVJLAW1AWvXEJR1uvqFAL29PUs
+
+
+// tiene q ser en la misma ventana terminal q ejecuta grunt serve
+export CONSUMER_KEY=uSsjpYxiaN84D0AHpY33Aw
+export CONSUMER_SECRET=W5ma8YuGo51URByACjUMGNLx5sc
+export TOKEN=Zhv9isPm2McJBO6oIVlv2Nu_26Lcq_rH
+export TOKEN_SECRET=SMVJLAW1AWvXEJR1uvqFAL29PUs
+
+
+///////////
+
+//mi mongolab address
+ mongodb://<dbuser>:<dbpassword>@ds035663.mongolab.com:35663/fcctests
+heroku config:set MONGOLAB_URI=mongodb://test:test@ds035663.mongolab.com:35663/fcctests
+heroku config:set MONGOLAB_URI=mongodb://test:test@ds035663.mongolab.com:35663/fcctests
+mongo ds035663.mongolab.com:35663/fcctests -u test -p test
+
+// install heroku client
+wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+
+
+//create account on heroku.com
+//create account on mongolab.com
+heroku login
+yo angular-fullstack:heroku   // (compila minify crea /dist folder )
+cd ~/workspace/dist   (on c9) or
+cd dist (local env)
+// set ur environment variables  ::heroku config:set VAR=value 
+// debe entrar en el folder primero ::::::::: cd dist
+// heroku addons:add mongolab // SKIP THIS.. CREATE UR ACCOUNT / DATABASE /DB USERS ON THE WEBPAGE
+grunt --force && grunt buildcontrol:heroku  //(push to heroku?? ) (redo this when make changes to push again to heroku)
+heroku open
+
+
+
+
+///////////////
+git add .
+git commit -m "mensaje"
+heroku login
+heroku create
+git push heroku master
+
+
+///////////// heroku commands
+heroku run node (run console )
+heroku apps (lista apps)
+heroku apps:info
+heroku apps:info -app example
+heroku open
+heroku config
+
+yo 
+///////// CHECKING
+ heroku config
+ heroku config | grep MONGOLAB_URI
+ heroku config:get MONGOLAB_URI
+///////////
+
+/////////COMMON MISTAKES/FORGETS
+
+make sure u running mongodb (./mongod )
+
+
+
+
+
+
+
+index.js
+
+ twitter: {
+    clientID:     process.env.TWITTER_ID || 'id',
+    clientSecret: process.env.TWITTER_SECRET || 'secret',
+    callbackURL:  (process.env.DOMAIN || '') + '/auth/twitter/callback'
+  },
+
+
+
+
+
+
+
+production.js
+  // Server IP
+  ip:       process.env.OPENSHIFT_NODEJS_IP ||
+            process.env.IP ||
+            undefined,
+
+  // Server port
+  port:     process.env.OPENSHIFT_NODEJS_PORT ||
+            process.env.PORT ||
+            8080,
+
+  // MongoDB connection options
+  mongo: {
+    uri:    process.env.MONGOLAB_URI ||
+            process.env.MONGOHQ_URL ||
+            process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
+            'mongodb://localhost/workspace'
+
+///////////
+
+create table Schema
+add some seeds values (seed.js)
+
+
+
+https://dev.twitter.com/web/sign-in/implementing
+
+mongodb://test:test@ds047712.mongolab.com:47712/heroku_8jb3wqmm'
+
+
+error  "watch ENOSPC"
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
+/////////////////////
+
+// remove thing api
+//------------
+
+/server/api/thing <<-- delete folder
+
+on /server/config/seed.js, remove line 8 and  11 to 31
+
+on /server/routes.js, remove line 13
+
+server/config/sockeio.js line 21
+
+------
+/client/main/main-controller.js  <<-- remove line 5 to 26

@@ -1,0 +1,49 @@
+app = express();
+function cb(req, res){ ... }
+
+//directly (can be chained)
+app.route('/path').get(cb)
+
+
+///create a route.. then install on app
+app.use("/path",app.Router().get('/subpath', cb)
+
+var r = app.Router();
+app.use(r)
+r.get('/path', cb)
+
+
+
+app.route == shorcut for app.Router() + app.use()
+
+
+////////////
+simple request
+
+
+app.get('/path', cb)
+
+methods
+
+.get
+.post
+.put
+.delete
+.all
+
+callback can have req,res,next arguments
+
+
+///
+var route1 = express.Router();
+route1.get('/', cb);
+
+var route2 = express.Router();
+route2.get('/', cb);
+
+app.use('/path1', route1)
+app.use('/path2', route2))
+//app.use('/path3', require('./path3'))
+
+path1.js
+module.export
