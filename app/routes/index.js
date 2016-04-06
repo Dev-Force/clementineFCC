@@ -6,6 +6,8 @@ var validurl = require('valid-url');
 var URL = require('../models/url');
 var Images = require('../models/images');
 var Bing = require('node-bing-api')({ accKey: "VRAFeiNTP31dbq0goGu60OTxAC0rBMECjtzlRTFHd7c=" });
+var multer = require('multer');
+var upload = multer();
 
 module.exports = function (app, passport) {
 
@@ -173,6 +175,18 @@ module.exports = function (app, passport) {
 					res.send(data);
 				});
 		});	
+		
+	app.route('/fileupload')
+		.get(function(req, res) {
+			res.sendFile(path + '/public/fileupload.html');
+		});
+		
+	app.route('/fileanalyse')
+		.post(upload.single('the-file'), function(req, res) {
+			res.json({fileSize: req.file.size});
+		});
+		
+		
 	app.route('/:datetime')
 		.get(function(req, res) {
 			res.contentType('application/json');
